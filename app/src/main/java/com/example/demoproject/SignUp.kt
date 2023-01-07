@@ -19,6 +19,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
@@ -72,32 +73,14 @@ class SignUp : AppCompatActivity() {
         }
          */
 
-        // get text from edit texts
-        /*
-        val edt1: EditText = findViewById(R.id.firstName)
-        val edt2: EditText = findViewById(R.id.LastName)
-        val edt3: EditText = findViewById(R.id.emailAddress)
-        val edt4: EditText = findViewById(R.id.phoneNumber)
-        val edt5: EditText = findViewById(R.id.password)
-        val edt6: EditText = findViewById(R.id.confirmPassword)
-*/
         viewProf.setOnClickListener {
             val intent = Intent(this@SignUp, Profile::class.java)
             startActivity(intent)
-            Log.d("SignUp", "Button click succesfull")
+            Log.d("SignUp", "Button click successful")
         }
 
         val btn: Button = findViewById(R.id.nextBtn)
         btn.setOnClickListener{
-            /*
-            val firstName  = firstName.text.toString()
-            val lastName = lastName.text.toString()
-            val email = email.text.toString().trim()
-            val phoneNo: Long = phoneNo.text.toString().toLong()
-            val password = password.text.toString()
-            val confirmPassword = confirmPassword.text.toString()
-            saveFireStore(firstName, lastName, email, phoneNo, password, confirmPassword)
-             */
             signUpUser()
         }
 
@@ -127,16 +110,11 @@ class SignUp : AppCompatActivity() {
 
     private fun callActivity(){
 
-        val edtTxt1: EditText = findViewById(R.id.firstName)
-        val edtTxt2: EditText = findViewById(R.id.LastName)
-        val edtTxt3: EditText = findViewById(R.id.emailAddress)
-        val edtTxt4: EditText = findViewById(R.id.phoneNumber)
-
         // get text from edit texts
-        val firstName  = edtTxt1.text.toString()
-        val lastName = edtTxt2.text.toString()
-        val email = edtTxt3.text.toString()
-        val phoneNumber = edtTxt4.text.toString().toLong()
+        val firstName  = firstName.text.toString()
+        val lastName = lastName.text.toString()
+        val email = email.text.toString()
+        val phoneNumber = phoneNo.text.toString().toLong()
 
         //intent to start activity
         val intent = Intent(this, ContactsContract.Profile::class.java)
@@ -275,8 +253,8 @@ class SignUp : AppCompatActivity() {
     private fun signUpUser(){
         val firstName  = firstName.text.toString()
         val lastName = lastName.text.toString()
-        val email = email.text.toString().trim()
-        val phoneNo: Long = phoneNo.text.toString().toLong()
+        val email = email.text.toString().trim{it <= ' '}
+        val phoneNo: String = phoneNo.text.toString()
         val password = password.text.toString()
         val confirmPassword = confirmPassword.text.toString()
         val db = FirebaseFirestore.getInstance()
@@ -284,14 +262,23 @@ class SignUp : AppCompatActivity() {
         //val uid = user?.uid
 
         // check text fields are empty or not
-        if (firstName.isNotEmpty() && lastName.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()){
+        if (firstName.isNotEmpty() && lastName.isNotEmpty() && email.isNotEmpty() && phoneNo.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()){
             if (password == confirmPassword){
                 firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
+                    // if registration is successfully done
                     if (it.isSuccessful){
                         Toast.makeText(this, "Successfully Registration", Toast.LENGTH_LONG).show()
-                        /*if (user != null) {
-                            db.collection("users").document(user.uid).set()
-                        }*/
+                        val firebaseUser: FirebaseUser = it.result!!.user!!
+//                        if (user != null) {
+//                            db.collection("users").document(user.uid).set(UserModel(firstName, lastName, email, phoneNo))
+//                        }
+                        val intent = Intent(this@SignUp, Profile::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        intent.putExtra("USER_ID", firebaseUser.uid)
+                        intent.putExtra("EMAIL", firebaseUser.email)
+                        //intent.putExtra("PHONE_NUMBER", firebaseUser.phoneNumber)
+                        startActivity(intent)
+                        finish()
                     }
                     else{
                         Toast.makeText(this, it.exception.toString(), Toast.LENGTH_LONG).show()
@@ -303,7 +290,7 @@ class SignUp : AppCompatActivity() {
             }
         }
         else{
-            Toast.makeText(this, "First Name, Last Name, Email, Password and Confirm Password is required", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "First Name, Last Name, Email, Phone Number and Password is required", Toast.LENGTH_SHORT).show()
             Log.d("SignUp", "It's working fine")
         }
     }

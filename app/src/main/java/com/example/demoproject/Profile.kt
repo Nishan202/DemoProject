@@ -7,22 +7,25 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 class Profile : AppCompatActivity() {
     private lateinit var firstName: TextView
     private lateinit var lastName: TextView
-    private lateinit var email: TextView
+    private lateinit var mail: TextView
     private lateinit var phoneNo: TextView
     private lateinit var btn: Button
+    private lateinit var btn2: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
         firstName = findViewById(R.id.firstNameInf)
         lastName = findViewById(R.id.lastNameInf)
-        email = findViewById(R.id.emailInf)
+        mail = findViewById(R.id.emailInf)
         phoneNo = findViewById(R.id.phoneInf)
         btn = findViewById(R.id.todoView)
+        btn2 = findViewById(R.id.louOut)
         // get data from intent
         /*
         val firstName = intent.getStringExtra("FIRST_NAME")
@@ -45,6 +48,19 @@ class Profile : AppCompatActivity() {
         phn.text = phoneNumber
 
         */
+        val userId = intent.getStringExtra("USER_ID")
+        val email = intent.getStringExtra("EMAIL")
+        //val phoneNumber = intent.getStringExtra("PHONE_NUMBER")
+
+        mail.text = "email: $email"
+        //phoneNo.text = "phone number: $phoneNumber"
+
+        // for Logout
+        btn2.setOnClickListener{
+            FirebaseAuth.getInstance().signOut()
+            startActivity(Intent(this@Profile, MainActivity::class.java))
+            finish()
+        }
 
         btn.setOnClickListener {
             val intent = Intent(this, TodoList::class.java)

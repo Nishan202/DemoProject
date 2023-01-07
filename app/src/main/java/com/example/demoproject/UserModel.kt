@@ -3,18 +3,21 @@ package com.example.demoproject
 import android.widget.TextView
 import org.w3c.dom.Text
 import java.util.SimpleTimeZone
+import kotlin.properties.Delegates
 
 class UserModel {
-//    private lateinit var firstName: TextView
-//    private lateinit var lastName: TextView
-//    private lateinit var email: TextView
-//    private lateinit var phoneNo: TextView
+    private lateinit var firstName: String
+    private lateinit var lastName: String
+    private lateinit var phoneNo: String
+    private lateinit var email: String
 
-    class UserModel(firstname: String, lastname: String, mail: String, phone: Long){
-        var firstName = firstname
-        var lastName = lastname
-        var email = mail
-        var phoneNo = phone
+
+    constructor(firstName: String, lastName: String, phoneNo: String, email: String) {
+        this.firstName = firstName
+        this.lastName = lastName
+        this.phoneNo = phoneNo
+        this.email = email
     }
 
+    constructor()
 }
