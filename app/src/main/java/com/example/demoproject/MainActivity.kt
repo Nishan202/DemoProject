@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import java.util.*
 
 
@@ -167,11 +168,16 @@ class MainActivity : AppCompatActivity() {
         val password = password.text.toString()
 
         if (email.isNotEmpty() && password.isNotEmpty()) {
-            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
-                if (it.isSuccessful) {
+            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val firebaseUser: FirebaseUser = task.result!!.user!!
                     val customSnackbar = Snackbar.make(lmain, "Successfully LoggedIn", Snackbar.LENGTH_LONG).setAction("Open",object : View.OnClickListener{
                         override fun onClick(v: View?) {
                             var intent = Intent(this@MainActivity, LandingPage::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            intent.putExtra("USER_ID", firebaseUser.uid)
+                            intent.putExtra("EMAIL", firebaseUser.email)
+                            //intent.putExtra("PHONE_NUMBER", firebaseUser.phoneNumber)
                             startActivity(intent)
                             finish()
                         }

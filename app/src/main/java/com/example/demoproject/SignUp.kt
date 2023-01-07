@@ -33,7 +33,7 @@ class SignUp : AppCompatActivity() {
     private lateinit var phoneNo: EditText
     private lateinit var password: EditText
     private lateinit var confirmPassword: EditText
-    private lateinit var viewProf: Button
+    //private lateinit var viewProf: Button
     private var passwordVisible: Boolean = false
     private lateinit var firebaseAuth: FirebaseAuth
     
@@ -57,7 +57,7 @@ class SignUp : AppCompatActivity() {
         phoneNo = findViewById(R.id.phoneNumber)
         password = findViewById(R.id.password)
         confirmPassword = findViewById(R.id.confirmPassword)
-        viewProf = findViewById(R.id.viewProfile)
+        //viewProf = findViewById(R.id.viewProfile)
         firebaseAuth = FirebaseAuth.getInstance()
 
         // for email validation
@@ -73,11 +73,11 @@ class SignUp : AppCompatActivity() {
         }
          */
 
-        viewProf.setOnClickListener {
-            val intent = Intent(this@SignUp, Profile::class.java)
-            startActivity(intent)
-            Log.d("SignUp", "Button click successful")
-        }
+//        viewProf.setOnClickListener {
+//            val intent = Intent(this@SignUp, Profile::class.java)
+//            startActivity(intent)
+//            Log.d("SignUp", "Button click successful")
+//        }
 
         val btn: Button = findViewById(R.id.nextBtn)
         btn.setOnClickListener{
@@ -97,7 +97,6 @@ class SignUp : AppCompatActivity() {
         val spannableString: SpannableString by lazy { SpannableString("Don't have an account? Sign up") }
         val clickableSpan = object : ClickableSpan(){
             override fun onClick(widget: View) {
-//               Toast.makeText(this@MainActivity, "Clicked", Toast.LENGTH_LONG).show()
                 val intent = Intent(this@SignUp,  MainActivity::class.java)
                 startActivity(intent)
                 finish()
@@ -251,10 +250,10 @@ class SignUp : AppCompatActivity() {
     }
 */
     private fun signUpUser(){
-        val firstName  = firstName.text.toString()
-        val lastName = lastName.text.toString()
-        val email = email.text.toString().trim{it <= ' '}
-        val phoneNo: String = phoneNo.text.toString()
+        val firstNm  = firstName.text.toString()
+        val lastNm = lastName.text.toString()
+        val mail = email.text.toString().trim{it <= ' '}
+        val phoneNm: String = phoneNo.text.toString()
         val password = password.text.toString()
         val confirmPassword = confirmPassword.text.toString()
         val db = FirebaseFirestore.getInstance()
@@ -262,17 +261,17 @@ class SignUp : AppCompatActivity() {
         //val uid = user?.uid
 
         // check text fields are empty or not
-        if (firstName.isNotEmpty() && lastName.isNotEmpty() && email.isNotEmpty() && phoneNo.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()){
+        if (firstNm.isNotEmpty() && lastNm.isNotEmpty() && mail.isNotEmpty() && phoneNm.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()){
             if (password == confirmPassword){
-                firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
+                firebaseAuth.createUserWithEmailAndPassword(mail, password).addOnCompleteListener { task ->
                     // if registration is successfully done
-                    if (it.isSuccessful){
+                    if (task.isSuccessful){
                         Toast.makeText(this, "Successfully Registration", Toast.LENGTH_LONG).show()
-                        val firebaseUser: FirebaseUser = it.result!!.user!!
+                        val firebaseUser: FirebaseUser = task.result!!.user!!
 //                        if (user != null) {
 //                            db.collection("users").document(user.uid).set(UserModel(firstName, lastName, email, phoneNo))
 //                        }
-                        val intent = Intent(this@SignUp, Profile::class.java)
+                        val intent = Intent(this@SignUp, LandingPage::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         intent.putExtra("USER_ID", firebaseUser.uid)
                         intent.putExtra("EMAIL", firebaseUser.email)
@@ -281,7 +280,7 @@ class SignUp : AppCompatActivity() {
                         finish()
                     }
                     else{
-                        Toast.makeText(this, it.exception.toString(), Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, task.exception.toString(), Toast.LENGTH_LONG).show()
                     }
                 }
             }

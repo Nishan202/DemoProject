@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
 
 class Profile : AppCompatActivity() {
     private lateinit var firstName: TextView
@@ -27,7 +28,7 @@ class Profile : AppCompatActivity() {
         btn = findViewById(R.id.todoView)
         btn2 = findViewById(R.id.louOut)
         // get data from intent
-        /*
+
         val firstName = intent.getStringExtra("FIRST_NAME")
         val lastName = intent.getStringExtra("LAST_NAME")
         val email = intent.getStringExtra("EMAIL")
@@ -47,13 +48,6 @@ class Profile : AppCompatActivity() {
         val phn = findViewById<TextView>(R.id.phoneInf)
         phn.text = phoneNumber
 
-        */
-        val userId = intent.getStringExtra("USER_ID")
-        val email = intent.getStringExtra("EMAIL")
-        //val phoneNumber = intent.getStringExtra("PHONE_NUMBER")
-
-        mail.text = "email: $email"
-        //phoneNo.text = "phone number: $phoneNumber"
 
         // for Logout
         btn2.setOnClickListener{
@@ -62,14 +56,5 @@ class Profile : AppCompatActivity() {
             finish()
         }
 
-        btn.setOnClickListener {
-            val intent = Intent(this, TodoList::class.java)
-            startActivity(intent)
-        }
-
-        fun profileDetails(firstname: String, lastname: String, mail: String, phone: Long) {
-            this.firstName
-        }
     }
-
 }
