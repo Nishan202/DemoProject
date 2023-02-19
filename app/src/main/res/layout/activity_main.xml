@@ -91,4 +91,13 @@
         android:textStyle="bold"
         android:layout_marginTop="25dp"
         android:layout_gravity="center"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:visibility="gone"
+        android:indeterminateTint="@color/text_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="90dp"/>
 </LinearLayout>

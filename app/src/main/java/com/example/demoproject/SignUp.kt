@@ -16,8 +16,10 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import com.example.demoproject.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -33,10 +35,9 @@ class SignUp : AppCompatActivity() {
     private lateinit var phoneNo: EditText
     private lateinit var password: EditText
     private lateinit var confirmPassword: EditText
-    //private lateinit var viewProf: Button
     private var passwordVisible: Boolean = false
     private lateinit var firebaseAuth: FirebaseAuth
-    
+    private lateinit var binding: ActivitySignUpBinding
     
 
     /*private val emailPattern = "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
@@ -59,6 +60,8 @@ class SignUp : AppCompatActivity() {
         confirmPassword = findViewById(R.id.confirmPassword)
         //viewProf = findViewById(R.id.viewProfile)
         firebaseAuth = FirebaseAuth.getInstance()
+        binding = ActivitySignUpBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // for email validation
         /*
@@ -79,8 +82,8 @@ class SignUp : AppCompatActivity() {
 //            Log.d("SignUp", "Button click successful")
 //        }
 
-        val btn: Button = findViewById(R.id.nextBtn)
-        btn.setOnClickListener{
+//        val btn: Button = findViewById(R.id.nextBtn)
+        binding.nextBtn.setOnClickListener{
             signUpUser()
         }
 
@@ -127,38 +130,37 @@ class SignUp : AppCompatActivity() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun visiblePassword(){
-        password.setOnTouchListener(View.OnTouchListener { _: View, event: MotionEvent ->
+        binding.password.setOnTouchListener(View.OnTouchListener { _: View, event: MotionEvent ->
             val right = 2
             if (event.action == MotionEvent.ACTION_UP) {
-                if (event.rawX >= password.right - password.compoundDrawables[right].bounds
+                if (event.rawX >= binding.password.right - binding.password.compoundDrawables[right].bounds
                         .width()
                 ) {
-                    val selection = password.selectionEnd
+                    val selection = binding.password.selectionEnd
                     if (passwordVisible) {
                         // set drawable image here
-                        password.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                        binding.password.setCompoundDrawablesRelativeWithIntrinsicBounds(
                             0,
                             0,
                             R.drawable.ic_baseline_visibility_off_24,
                             0
                         )
                         // for hide password
-                        password.transformationMethod = PasswordTransformationMethod.getInstance()
+                        binding.password.transformationMethod = PasswordTransformationMethod.getInstance()
                         passwordVisible = false
                     } else {
                         // set drawable image here
-                        password.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                        binding.password.setCompoundDrawablesRelativeWithIntrinsicBounds(
                             0,
                             0,
                             R.drawable.ic_baseline_visibility_24,
                             0
                         )
                         // for hide password
-                        password.transformationMethod =
-                            HideReturnsTransformationMethod.getInstance()
+                        binding.password.transformationMethod = HideReturnsTransformationMethod.getInstance()
                         passwordVisible = true
                     }
-                    password.setSelection(selection)
+                    binding.password.setSelection(selection)
                     return@OnTouchListener true
                 }
             }
@@ -166,37 +168,37 @@ class SignUp : AppCompatActivity() {
 
         })
 
-        confirmPassword.setOnTouchListener(View.OnTouchListener { _: View, event: MotionEvent ->
+        binding.confirmPassword.setOnTouchListener(View.OnTouchListener { _: View, event: MotionEvent ->
             val right = 2
             if (event.action == MotionEvent.ACTION_UP) {
-                if (event.rawX >= confirmPassword.right - confirmPassword.compoundDrawables[right].bounds
+                if (event.rawX >= binding.confirmPassword.right - binding.confirmPassword.compoundDrawables[right].bounds
                         .width()
                 ) {
-                    val selection = confirmPassword.selectionEnd
+                    val selection = binding.confirmPassword.selectionEnd
                     if (passwordVisible) {
                         // set drawable image here
-                        confirmPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                        binding.confirmPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(
                             0,
                             0,
                             R.drawable.ic_baseline_visibility_off_24,
                             0
                         )
                         // for hide password
-                        confirmPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                        binding.confirmPassword.transformationMethod = PasswordTransformationMethod.getInstance()
                         passwordVisible = false
                     } else {
                         // set drawable image here
-                        confirmPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                        binding.confirmPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(
                             0,
                             0,
                             R.drawable.ic_baseline_visibility_24,
                             0
                         )
                         // for hide password
-                        confirmPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                        binding.confirmPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
                         passwordVisible = true
                     }
-                    confirmPassword.setSelection(selection)
+                    binding.confirmPassword.setSelection(selection)
                     return@OnTouchListener true
                 }
             }
@@ -236,7 +238,7 @@ class SignUp : AppCompatActivity() {
         db.collection("users")
             .get()
             .addOnCompleteListener{
-                val result: StringBuffer = StringBuffer()
+                    val result: StringBuffer = StringBuffer()
                 if (it.isSuccessful){
                     for (document in it.result!!){
                         result.append(document.data.getValue("firstName")).append(" ")
@@ -250,24 +252,22 @@ class SignUp : AppCompatActivity() {
     }
 */
     private fun signUpUser(){
-        val firstNm  = firstName.text.toString()
-        val lastNm = lastName.text.toString()
-        val mail = email.text.toString().trim{it <= ' '}
-        val phoneNm: String = phoneNo.text.toString()
-        val password = password.text.toString()
-        val confirmPassword = confirmPassword.text.toString()
-        val db = FirebaseFirestore.getInstance()
-        val user = Firebase.auth.currentUser
-        //val uid = user?.uid
+        val firstNm  = binding.firstName.text.toString()
+        val lastNm = binding.LastName.text.toString()
+        val mail = binding.emailAddress.text.toString().trim{it <= ' '}
+        val phoneNm: String = binding.phoneNumber.text.toString()
+        val password = binding.password.text.toString().trim{it <= ' '}
+        val confirmPassword = binding.confirmPassword.text.toString().trim { it <= ' ' }
 
         // check text fields are empty or not
         if (firstNm.isNotEmpty() && lastNm.isNotEmpty() && mail.isNotEmpty() && phoneNm.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()){
             if (password == confirmPassword){
-                firebaseAuth.createUserWithEmailAndPassword(mail, password).addOnCompleteListener { task ->
+                binding.progressBar.visibility = View.VISIBLE
+                firebaseAuth.createUserWithEmailAndPassword(mail, password).addOnCompleteListener {
                     // if registration is successfully done
-                    if (task.isSuccessful){
+                    if (it.isSuccessful){
                         Toast.makeText(this, "Successfully Registration", Toast.LENGTH_LONG).show()
-                        val firebaseUser: FirebaseUser = task.result!!.user!!
+                        val firebaseUser: FirebaseUser = it.result!!.user!!
 //                        if (user != null) {
 //                            db.collection("users").document(user.uid).set(UserModel(firstName, lastName, email, phoneNo))
 //                        }
@@ -275,13 +275,13 @@ class SignUp : AppCompatActivity() {
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         intent.putExtra("USER_ID", firebaseUser.uid)
                         intent.putExtra("EMAIL", firebaseUser.email)
-                        //intent.putExtra("PHONE_NUMBER", firebaseUser.phoneNumber)
                         startActivity(intent)
                         finish()
                     }
                     else{
-                        Toast.makeText(this, task.exception.toString(), Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, it.exception.toString(), Toast.LENGTH_LONG).show()
                     }
+                    binding.progressBar.visibility = View.GONE
                 }
             }
             else{

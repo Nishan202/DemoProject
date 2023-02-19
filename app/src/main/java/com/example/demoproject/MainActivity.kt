@@ -9,20 +9,24 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.LinkMovementMethod
 import android.text.method.PasswordTransformationMethod
 import android.text.style.ClickableSpan
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import com.example.demoproject.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import java.util.*
+import java.util.zip.Inflater
 
 
 class MainActivity : AppCompatActivity() {
@@ -34,7 +38,7 @@ class MainActivity : AppCompatActivity() {
     private var count: Int = 3
     private var passwordVisible: Boolean = false
     lateinit var auth: FirebaseAuth
-
+    private lateinit var progressBar: ProgressBar
     private lateinit var lmain: LinearLayout
 
     @SuppressLint("ClickableViewAccessibility")
@@ -48,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         logIn = findViewById(R.id.nextButton)
         auth = FirebaseAuth.getInstance()
         lmain = findViewById(R.id.mainl)
+        progressBar = findViewById(R.id.progressBar)
 
         // call the validate function
         logIn.setOnClickListener {
@@ -168,6 +173,7 @@ class MainActivity : AppCompatActivity() {
         val password = password.text.toString()
 
         if (email.isNotEmpty() && password.isNotEmpty()) {
+            progressBar.visibility = View.VISIBLE
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val firebaseUser: FirebaseUser = task.result!!.user!!
@@ -191,6 +197,7 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(this, "Invalid Credential", Toast.LENGTH_LONG).show()
                 }
+                progressBar.visibility = View.GONE
             }
         }
         else{

@@ -25,7 +25,6 @@ class Profile : AppCompatActivity() {
         lastName = findViewById(R.id.lastNameInf)
         mail = findViewById(R.id.emailInf)
         phoneNo = findViewById(R.id.phoneInf)
-        btn = findViewById(R.id.todoView)
         btn2 = findViewById(R.id.louOut)
         // get data from intent
 

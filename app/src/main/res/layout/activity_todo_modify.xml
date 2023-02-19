@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    tools:context=".TodoModify">
+
+    <EditText
+        android:id="@+id/todoTitle"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="31dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginRight="31dp"
+        android:background="@drawable/edt_background"
+        android:hint="Title"
+        android:paddingLeft="15dp"
+        android:textColor="#000"
+        android:textColorHint="#D6E4E5"/>
+
+    <EditText
+        android:id="@+id/todoBody"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginLeft="31dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="31dp"
+        android:background="@drawable/edt_background"
+        android:hint="Body"
+        android:paddingLeft="15dp"
+        android:textColor="#000"
+        android:textColorHint="#D6E4E5"/>
+
+    <TextView
+        android:id="@+id/calender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set Date"
+        android:textColor="#fff"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="15dp"
+        android:drawablePadding="8dp"
+        android:drawableRight="@drawable/baseline_calendar_month_24"
+        android:textSize="16sp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/save"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="31dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="31dp"
+            android:backgroundTint="#82CD47"
+            android:text="Save"
+            android:textAllCaps="false"
+            android:textColor="#000"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/delete"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="31dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#82CD47"
+            android:text="Delete"
+            android:textAllCaps="false"
+            android:textColor="#000"
+            android:textStyle="bold"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="31dp"/>
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progressB"
+        style="?android:attr/progressBarStyle"
+        android:visibility="gone"
+        android:indeterminateTint="@color/text_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="90dp"/>
+
+</LinearLayout>
